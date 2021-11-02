@@ -77,7 +77,7 @@
 
  $.ajax('data.json')
      .done(data => {
-		 if (typeof(data) == "string") data = JSON.parse(data);
+         if (typeof(data) == "string") data = JSON.parse(data);
          pcr.META = data.meta;
          pcr.DATA_ARRAY = data.data;
          pcr.SAME_META = [];
@@ -240,20 +240,20 @@
          })
          return;
      };
-	 //记录一下同尾部的结果稍微优化一下
-	 //当然也可以一开始就打表，但是懒
-	 let tailToCount = new Map();
+     //记录一下同尾部的结果稍微优化一下
+     //当然也可以一开始就打表，但是懒
+     let tailToCount = new Map();
      dataArray.forEach(data => {
-		 let unClickCount = 0;
-		 if (tailToCount[data.tail] == null)
-		 {
-			 deep_map = calcDistance(data);
-			 for (let k in deep_map) {
-				 if(!isClickedByKey(k) && deep_map[k] <= pcr.showNextUnClick) unClickCount++;
-			 }
-			 tailToCount[data.tail] = unClickCount;
-		 }
-		 data.nextUnClick = tailToCount[data.tail];
+         let unClickCount = 0;
+         if (tailToCount[data.tail] == null)
+         {
+             deep_map = calcDistance(data);
+             for (let k in deep_map) {
+                 if(!isClickedByKey(k) && deep_map[k] <= pcr.showNextUnClick) unClickCount++;
+             }
+             tailToCount[data.tail] = unClickCount;
+         }
+         data.nextUnClick = tailToCount[data.tail];
      });
  }
 
@@ -283,44 +283,44 @@
  //bfs一下, 对于每个起点是O(N)的
  function calcDistance(src, reverse = false)
  {
-	 let deep_map = new Map();
-	 deep_map[src.iconID + src.name] = 0;
-	 let queue = [src];
-	 let l = 0, r = 0;
-	 while (l <= r) {
-		 let u = queue[l];
-		 let dep = deep_map[u.iconID + u.name];
-		 if (dep != null) {
-			 if (!reverse)
-			 {
-				 eachMatchedWord(u.tail, 1, v => {
-					 if (deep_map[v.iconID + v.name] == null) {
-						 deep_map[v.iconID + v.name] = dep + 1;
-						 queue.push(v);
-						 r++;
-					 }
-				 });
-			 } else {
-				 eachMatchedWordHead(u.head, 1, v => {
-					 if (deep_map[v.iconID + v.name] == null) {
-						 deep_map[v.iconID + v.name] = dep + 1;
-						 queue.push(v);
-						 r++;
-					 }
-				 });
-			 }
-		 }
-		 l++;
-	 }
-	 return deep_map;
+     let deep_map = new Map();
+     deep_map[src.iconID + src.name] = 0;
+     let queue = [src];
+     let l = 0, r = 0;
+     while (l <= r) {
+         let u = queue[l];
+         let dep = deep_map[u.iconID + u.name];
+         if (dep != null) {
+             if (!reverse)
+             {
+                 eachMatchedWord(u.tail, 1, v => {
+                     if (deep_map[v.iconID + v.name] == null) {
+                         deep_map[v.iconID + v.name] = dep + 1;
+                         queue.push(v);
+                         r++;
+                     }
+                 });
+             } else {
+                 eachMatchedWordHead(u.head, 1, v => {
+                     if (deep_map[v.iconID + v.name] == null) {
+                         deep_map[v.iconID + v.name] = dep + 1;
+                         queue.push(v);
+                         r++;
+                     }
+                 });
+             }
+         }
+         l++;
+     }
+     return deep_map;
  }
  
  function splitDataArray(dataArray) {
      const focus = [],
          normal = [];
-	 if (pcr.focusTarget) {
-		deep_map = calcDistance(pcr.focusTarget, true);
-	 }
+     if (pcr.focusTarget) {
+        deep_map = calcDistance(pcr.focusTarget, true);
+     }
      dataArray.forEach(data => {
          if (isFocusTarget(data.name, data.iconID)) {
              // 把目标插入到最前边
@@ -396,10 +396,10 @@
              eachHandle(config);
          });
 
-		 if (configData.normal && configData.normal.length > 0) {
-			 htmlArray.push(`<div class="hr">不通向目标</div>`);
-		 }
-		 configData.normal && configData.normal.forEach(config => {
+         if (configData.normal && configData.normal.length > 0) {
+             htmlArray.push(`<div class="hr">不通向目标</div>`);
+         }
+         configData.normal && configData.normal.forEach(config => {
              htmlArray.push(buildShowDiv(config));
              eachHandle(config);
          });
