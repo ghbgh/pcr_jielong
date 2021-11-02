@@ -249,7 +249,7 @@
 		 {
 			 deep_map = calcDistance(data);
 			 for (let k in deep_map) {
-				 if(deep_map[k] <= pcr.showNextUnClick) unClickCount++;
+				 if(!isClickedByKey(k) && deep_map[k] <= pcr.showNextUnClick) unClickCount++;
 			 }
 			 tailToCount[data.tail] = unClickCount;
 		 }
@@ -284,26 +284,26 @@
  function calcDistance(src, reverse = false)
  {
 	 let deep_map = new Map();
-	 deep_map[src.name + src.iconID] = 0;
+	 deep_map[src.iconID + src.name] = 0;
 	 let queue = [src];
 	 let l = 0, r = 0;
 	 while (l <= r) {
 		 let u = queue[l];
-		 let dep = deep_map[u.name + u.iconID];
+		 let dep = deep_map[u.iconID + u.name];
 		 if (dep != null) {
 			 if (!reverse)
 			 {
 				 eachMatchedWord(u.tail, 1, v => {
-					 if (deep_map[v.name + v.iconID] == null) {
-						 deep_map[v.name + v.iconID] = dep + 1;
+					 if (deep_map[v.iconID + v.name] == null) {
+						 deep_map[v.iconID + v.name] = dep + 1;
 						 queue.push(v);
 						 r++;
 					 }
 				 });
 			 } else {
 				 eachMatchedWordHead(u.head, 1, v => {
-					 if (deep_map[v.name + v.iconID] == null) {
-						 deep_map[v.name + v.iconID] = dep + 1;
+					 if (deep_map[v.iconID + v.name] == null) {
+						 deep_map[v.iconID + v.name] = dep + 1;
 						 queue.push(v);
 						 r++;
 					 }
@@ -478,6 +478,10 @@
 
  function isClicked(name, iconID) {
      return pcr.clickHistory.has(iconID + name);
+ }
+ 
+ function isClickedByKey(key) {
+     return pcr.clickHistory.has(key);
  }
 
  function targetIcon() {
